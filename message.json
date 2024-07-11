@@ -1,9 +1,0 @@
-{
-    "encoded_message":"0123456789abcdef",
-    "compression_algorithm":"huffman",
-    "encoding": "cyclic",
-    "parameters":,
-    "errors": n,
-    "SHA256": h,
-    "entropy":e
-}
