@@ -64,7 +64,9 @@ def main() -> None:
         'encoded_message': encoded_message,
         'compression_algorithm':'huffman',
         'encoding': 'cyclic',
-        'parameters': [huffman_dict],
+        'parameters': {
+            'huffman_dict': huffman_dict
+        },
         'errors': 0,
         'SHA256': sha256_hash,
         'entropy': entropy
