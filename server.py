@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 
 from huffman import HuffmanCodec
+from cyclic import CyclicCodec
 import crypto_utils
 
 
@@ -16,10 +17,13 @@ def decompress(compression_algorithm: str, data: str, params: dict) -> str:
             raise ValueError(f'Unsupported compression algorithm: {compression_algorithm}')
 
 
-def decode(encoding: str, data: str, params: dict) -> str:
+def decode(encoding: str, data: str, params: dict) -> tuple[str, int]:
     match encoding:
         case 'cyclic':
-            return data
+            if 'cyclic_dict' not in params:
+                raise TypeError('Missing parameter: cyclic_dict.')
+
+            return CyclicCodec.decode(data, params['cyclic_dict'])
         
         case _:
             raise ValueError(f'Unsupported encoding: {encoding}')
@@ -37,11 +41,13 @@ def receive_json():
     decoded_message = crypto_utils.b64decode(data['encoded_message'])
 
     # Decode message with proper algorithm.
-    decoded_message = decode(
+    decoded_message, fixed_errors = decode(
         data['encoding'], 
         decoded_message, 
         data['parameters']
     )
+
+    errors_dif = data['errors'] - fixed_errors
 
     # Decompress message with proper algorithm.
     decoded_message = decompress(
@@ -61,7 +67,8 @@ def receive_json():
     # Send response
     response = {
         'decoded_message': decoded_message,
-        'error_corrections': 0,
+        'fixed_errors': fixed_errors,
+        'errors_dif': errors_dif,
         'SHA256': decoded_sha256_hash,
         'SHA256_diff': sha256_diff,
         'entropy': decoded_entropy,
