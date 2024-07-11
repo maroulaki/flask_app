@@ -4,6 +4,12 @@ import hashlib
 import base64
 
 
+def add_error(data: str, error_pos: float) -> str:
+    error_i = int((len(data)-1) * error_pos)
+    
+    return data[:error_i] + str(1 - int(data[error_i])) + data[error_i + 1:] 
+
+
 def entropy(data: str) -> float:
     freq_dict = Counter(data)
     total_count = sum(freq_dict.values())
