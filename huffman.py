@@ -65,7 +65,7 @@ class _HuffmanTree():
             node, code = frontier.pop()
 
             if node.item:
-                huffman_dict[node.item] = ''.join(code)
+                huffman_dict[node.item] = ''.join(code) if code else '0'
                 continue
 
             frontier.append((node.left, code + ['0']))
