@@ -1,18 +1,19 @@
 from sage.all import *
 from sage.coding.cyclic_code import CyclicCode
+from sympy.ntheory import isprime
+import random
 
 
 class CyclicCodec():
     __RING = PolynomialRing(GF(2), 'x')
+    __PRIMES = [i for i in range(5, 100) if isprime(i)]
 
 
     @staticmethod
     def encode(data: str) -> tuple[str, dict]:
         data = list(map(int, data)) 
 
-        n = 7
-        x = CyclicCodec.__RING.gen()
-        gen_poly = x**3 + x + 1
+        gen_poly, n = CyclicCodec.__generate_cyclic_code_pair()
 
         k = n - gen_poly.degree()
         cyclic_code = CyclicCode(gen_poly, n)
@@ -58,6 +59,26 @@ class CyclicCodec():
             decoded_data += map(str, decoded_chunk)
 
         return ''.join(decoded_data)[:-padding], fixed_errors
+    
+
+    @staticmethod
+    def __generate_cyclic_code_pair() -> tuple[Polynomial, int]:
+        while True:
+            n = random.choice(CyclicCodec.__PRIMES)
+            
+            x = CyclicCodec.__RING.gen()
+            p = x**n - 1
+            
+            divisors = [CyclicCodec.__RING(d[0]) for d in p.factor()]
+            filtered = [d for d in divisors if 1 < d.degree() < 10]
+
+            if not filtered:
+                continue
+
+            gen_poly = random.choice(filtered)
+            break
+
+        return gen_poly, n
     
 
     @staticmethod
