@@ -33,8 +33,11 @@ def receive_json():
     # Retrieve data.
     data = request.get_json()
 
+    # Base64 decode.
+    decoded_message = crypto_utils.b64decode(data['encoded_message'])
+
     # Decode message with proper algorithm.
-    decoded_message = decode(data['encoding'], data['encoded_message'])
+    decoded_message = decode(data['encoding'], decoded_message)
 
     # Decompress message with proper algorithm.
     decoded_message = decompress(

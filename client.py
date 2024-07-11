@@ -1,6 +1,7 @@
 import argparse
 import requests
 import json
+import base64
 from colorama import Style, Fore
 
 from huffman import HuffmanCodec
@@ -54,6 +55,9 @@ def main() -> None:
 
     # Compress message.
     encoded_message, huffman_dict = HuffmanCodec.encode(message)
+
+    # Base64 encode.
+    encoded_message = crypto_utils.b64encode(encoded_message)
 
     # Send payload
     payload = {

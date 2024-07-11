@@ -1,6 +1,7 @@
 from collections import Counter
 import numpy as np
 import hashlib
+import base64
 
 
 def entropy(data: str) -> float:
@@ -14,3 +15,11 @@ def entropy(data: str) -> float:
 
 def sha256_hash(data: str) -> str:
     return hashlib.sha256(data.encode('utf-8')).hexdigest()
+
+
+def b64encode(data: str) -> str:
+    return base64.b64encode(data.encode('utf-8')).decode('utf-8')
+
+
+def b64decode(data: str) -> str:
+    return base64.b64decode(data).decode('utf-8')
