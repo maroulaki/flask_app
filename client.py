@@ -50,7 +50,7 @@ def main() -> None:
     error_pos = args.error_pos
     
     if error_pos < 0 or error_pos > 1:
-        raise ValueError(f'invalid error_pos value: {error_pos}. Values must be between 0 and 1.')
+        raise ValueError(f'Invalid error_pos value: {error_pos}. Values must be between 0 and 1.')
 
     # Calculate message hash.
     sha256_hash = crypto_utils.sha256_hash(message)
