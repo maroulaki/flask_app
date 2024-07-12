@@ -27,7 +27,7 @@ python client.py -f message.txt -x 0.4
 `server.py`
 ![img](https://i.imgur.com/LzaniSU.png)
 
-`message.txt`
+`message.txt`<br>
 ![img](https://i.imgur.com/Yl50RRX.png)
 
 `client.py`
