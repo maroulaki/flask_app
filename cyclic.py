@@ -8,7 +8,7 @@ class CyclicCodec():
     __RING = PolynomialRing(GF(2), 'x')
     __PRIMES = [i for i in range(5, 100) if isprime(i)]
 
-
+    # Encodes the message
     @staticmethod
     def encode(data: str) -> tuple[str, dict]:
         data = list(map(int, data)) 
@@ -37,7 +37,7 @@ class CyclicCodec():
         
         return ''.join(encoded_data), cyclic_dict
         
-
+    # Decodes the message and handles error correction
     @staticmethod
     def decode(data: str, cyclic_dict: dict) -> tuple[str, int]:
         n = cyclic_dict['n']
@@ -61,6 +61,7 @@ class CyclicCodec():
         return ''.join(decoded_data)[:-padding], fixed_errors
     
 
+    # Generates a pair of codeword length (n) and a suitable generator polynomial
     @staticmethod
     def __generate_cyclic_code_pair() -> tuple[Polynomial, int]:
         while True:
