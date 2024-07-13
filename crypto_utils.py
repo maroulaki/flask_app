@@ -2,12 +2,20 @@ from collections import Counter
 import numpy as np
 import hashlib
 import base64
+import random
 
 
-def add_error(data: str, error_pos: float) -> str:
-    error_i = int((len(data)-1) * error_pos)
+def add_noise(data: str, ratio: float) -> tuple[str, int]:
+    assert 0 <= ratio <= 1
     
-    return data[:error_i] + str(1 - int(data[error_i])) + data[error_i + 1:] 
+    data = list(data)
+    errors = int((len(data)-1) * ratio)
+    error_pos = random.sample(list(range(len(data))), errors)
+
+    for i in error_pos:
+        data[i] = str(1 - int(data[i]))
+    
+    return ''.join(data), errors
 
 
 def entropy(data: str) -> float:
